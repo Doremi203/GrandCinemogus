@@ -7,5 +7,4 @@ data class FilmEntity(
     val id: Int,
     val title: String,
     val actors: MutableList<String>,
-    val sessionsIds: MutableList<Int>,
 )
