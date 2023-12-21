@@ -1,3 +1,5 @@
+package pll
+
 import kotlin.system.exitProcess
 
 fun main() {
