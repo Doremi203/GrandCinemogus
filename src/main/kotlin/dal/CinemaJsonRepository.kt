@@ -1,35 +1,15 @@
 package dal
 
 import dal.entities.CinemaEntity
-import dal.storages.Storage
+import kotlinx.serialization.encodeToString
 
-class CinemaJsonRepository(path: String) : BaseJsonRepository<CinemaEntity>(path) {
-    override fun getAll(): List<CinemaEntity> {
-        TODO("Not yet implemented")
+class CinemaJsonRepository(path: String) : JsonRepository<CinemaEntity>(path) {
+    override fun serialize(data: Storage<CinemaEntity>): String {
+        return json.encodeToString(data)
     }
 
-    override fun getById(id: Int): CinemaEntity? {
-        TODO("Not yet implemented")
-    }
-
-    override fun delete(item: CinemaEntity) {
-        TODO("Not yet implemented")
-    }
-
-    override fun update(item: CinemaEntity) {
-        TODO("Not yet implemented")
-    }
-
-    override fun add(item: CinemaEntity) {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadFromFile(): Storage<CinemaEntity> {
-        TODO("Not yet implemented")
-    }
-
-    override fun saveToFile(data: Storage<CinemaEntity>) {
-        TODO("Not yet implemented")
+    override fun deserialize(data: String): Storage<CinemaEntity> {
+        return json.decodeFromString(data)
     }
 
 }
