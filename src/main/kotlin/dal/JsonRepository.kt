@@ -9,8 +9,8 @@ abstract class JsonRepository<T>(path: String) {
     private val storage: Storage<T>
         get() = loadFromFile()
 
-    fun getAll(): List<T> {
-        return storage.data
+    fun getAllEntities(): MutableList<T> {
+        return storage.data.toMutableList()
     }
     fun add(item: T) {
         doActionWithData { data -> data.add(item) }
