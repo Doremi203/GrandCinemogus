@@ -1,9 +1,7 @@
-package models
+package bll.models
 
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class Session(
     val id: Int,
     val filmId: Int,

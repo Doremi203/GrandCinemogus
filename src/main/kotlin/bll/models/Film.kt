@@ -1,8 +1,5 @@
-package models
+package bll.models
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Film(
     val id: Int,
     val title: String,

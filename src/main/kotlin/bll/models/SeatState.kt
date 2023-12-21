@@ -1,4 +1,4 @@
-package models
+package bll.models
 
 enum class SeatState {
     FREE,
