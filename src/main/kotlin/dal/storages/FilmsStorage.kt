@@ -3,5 +3,5 @@ package dal.storages
 import dal.entities.FilmEntity
 
 data class FilmsStorage(
-    val films: List<FilmEntity>
-)
+    override val data: List<FilmEntity>
+) : Storage<FilmEntity>()
