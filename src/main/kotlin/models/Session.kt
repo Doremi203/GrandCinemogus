@@ -9,5 +9,5 @@ data class Session(
     val filmId: Int,
     val dateTime: LocalDateTime,
     val ticketPrice: Double,
-    val seats: MutableList<MutableList<SeatState>>,
+    val seats: List<List<SeatState>>,
 )
