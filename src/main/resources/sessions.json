@@ -1,0 +1,25 @@
+{
+    "type": "dal.storages.SessionsStorage",
+    "data": [
+        {
+            "id": 1,
+            "filmId": 1,
+            "dateTime": "2021-01-01T12:00",
+            "ticketPrice": 100.0,
+            "seats": [
+                [
+                    "FREE",
+                    "FREE"
+                ],
+                [
+                    "FREE",
+                    "FREE"
+                ],
+                [
+                    "FREE",
+                    "FREE"
+                ]
+            ]
+        }
+    ]
+}
