@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class CinemaEntity(
     override val id: Int,
     val name: String,
-    val rowEntities: MutableList<RowEntity>,
+    val rowEntities: List<RowEntity>,
 ) : EntityWithId()
 
