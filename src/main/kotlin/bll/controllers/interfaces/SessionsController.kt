@@ -1,4 +1,4 @@
-package bll.controllers
+package bll.controllers.interfaces
 
 import pll.models.input.SessionData
 import pll.models.output.SessionOutput
