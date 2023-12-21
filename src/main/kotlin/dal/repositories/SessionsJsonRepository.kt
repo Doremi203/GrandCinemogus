@@ -1,5 +1,6 @@
-package dal
+package dal.repositories
 
+import dal.Storage
 import dal.entities.SessionEntity
 import kotlinx.serialization.encodeToString
 

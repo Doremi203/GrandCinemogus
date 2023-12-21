@@ -1,5 +1,6 @@
-package dal
+package dal.repositories
 
+import dal.Storage
 import kotlinx.serialization.json.Json
 import java.io.File
 

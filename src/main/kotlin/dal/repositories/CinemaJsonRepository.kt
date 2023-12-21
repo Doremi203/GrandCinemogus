@@ -1,5 +1,6 @@
-package dal
+package dal.repositories
 
+import dal.Storage
 import dal.entities.CinemaEntity
 import kotlinx.serialization.encodeToString
 
