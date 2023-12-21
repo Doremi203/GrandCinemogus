@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FilmEntity(
-    val id: Int,
+    override val id: Int,
     val title: String,
     val actors: MutableList<String>,
-)
+) : EntityWithId()
