@@ -8,34 +8,39 @@ import java.io.File
 abstract class JsonRepository<T : EntityWithId>(path: String) {
     protected val json = Json { prettyPrint = true }
     private val file = File(path)
-    private val storage: Storage<T>
-        get() = loadFromFile()
 
-    fun getAllEntities(): MutableList<T> =
-        storage.data.toMutableList()
+    fun getAllEntities(): List<T> = loadStorageFromFile().data
 
     fun getEntityById(id: Int): T? =
-        storage.data.find { it.id == id }
+        loadStorageFromFile().data.find { it.id == id }
 
     fun add(item: T) =
-        loadDoActionWithDataAndSave { data -> data.add(item) }
+        loadDataDoActionAndSave { data -> data.add(item) }
 
-    fun update(item: T) =
-        loadDoActionWithDataAndSave { data ->
-            data.removeIf { it.id == item.id }
-            data.add(item)
+    fun updateIf(item: T): Boolean {
+        var isUpdated = false
+        loadDataDoActionAndSave { data ->
+            isUpdated = data.removeIf { it.id == item.id }
+            if (isUpdated)
+                data.add(item)
         }
-
-    fun deleteIf(id: Int): Boolean {
-        var res = false;
-        loadDoActionWithDataAndSave { data -> res = data.removeIf { it.id == id } }
-        return res;
+        return isUpdated
     }
 
-    private fun loadDoActionWithDataAndSave(action: (MutableList<T>) -> Unit) {
-        val data = storage.data.toMutableList()
-        action(data)
-        saveToFile(Storage(data))
+    fun deleteIf(id: Int): Boolean {
+        var isDeleted = false
+        loadDataDoActionAndSave { data -> isDeleted = data.removeIf { it.id == id } }
+        return isDeleted
+    }
+
+    protected abstract fun serialize(data: Storage<T>): String
+    protected abstract fun deserialize(data: String): Storage<T>
+
+    private fun loadDataDoActionAndSave(action: (MutableList<T>) -> Unit) {
+        val storage = loadStorageFromFile()
+        val dataToModify = storage.data.toMutableList()
+        action(dataToModify)
+        saveToFile(Storage(dataToModify))
     }
 
     private fun saveToFile(data: Storage<T>) {
@@ -43,12 +48,9 @@ abstract class JsonRepository<T : EntityWithId>(path: String) {
         file.writeText(jsonData)
     }
 
-    private fun loadFromFile(): Storage<T> {
+    private fun loadStorageFromFile(): Storage<T> {
         val data = file.readText()
         return deserialize(data)
     }
-
-    protected abstract fun serialize(data: Storage<T>): String
-    protected abstract fun deserialize(data: String): Storage<T>
 
 }
