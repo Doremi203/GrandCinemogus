@@ -1,6 +1,5 @@
 package dal.repositories
 
-import dal.Storage
 import dal.entities.EntityWithId
 import dal.exceptions.ElementAlreadyPresentException
 import kotlinx.serialization.json.Json
@@ -10,10 +9,11 @@ abstract class JsonRepository<T : EntityWithId>(path: String) {
     protected val json = Json { prettyPrint = true }
     private val file = File(path)
 
-    fun getAllEntities(): List<T> = loadStorageFromFile().data
+    fun getAllEntities(): List<T> = loadStorageFromFile()
 
-    fun getEntityById(id: Int): T? =
-        loadStorageFromFile().data.find { it.id == id }
+    fun getEntityById(id: Int): T =
+        loadStorageFromFile().find { it.id == id }
+            ?: throw NoSuchElementException("No element with id $id")
 
     fun add(item: T) {
         loadDataDoActionAndSave { data ->
@@ -55,22 +55,22 @@ abstract class JsonRepository<T : EntityWithId>(path: String) {
         return isDeleted
     }
 
-    protected abstract fun serialize(data: Storage<T>): String
-    protected abstract fun deserialize(data: String): Storage<T>
+    protected abstract fun serialize(data: List<T>): String
+    protected abstract fun deserialize(data: String): List<T>
 
     private fun loadDataDoActionAndSave(action: (MutableList<T>) -> Unit) {
-        val storage = loadStorageFromFile()
-        val dataToModify = storage.data.toMutableList()
+        val data = loadStorageFromFile()
+        val dataToModify = data.toMutableList()
         action(dataToModify)
-        saveToFile(Storage(dataToModify))
+        saveToFile(dataToModify)
     }
 
-    private fun saveToFile(data: Storage<T>) {
+    private fun saveToFile(data: List<T>) {
         val jsonData = serialize(data)
         file.writeText(jsonData)
     }
 
-    private fun loadStorageFromFile(): Storage<T> {
+    private fun loadStorageFromFile(): List<T> {
         val data = file.readText()
         return deserialize(data)
     }

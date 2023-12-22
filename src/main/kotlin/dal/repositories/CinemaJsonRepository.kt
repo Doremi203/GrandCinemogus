@@ -1,15 +1,14 @@
 package dal.repositories
 
-import dal.Storage
 import dal.entities.CinemaEntity
 import kotlinx.serialization.encodeToString
 
 class CinemaJsonRepository(path: String) : JsonRepository<CinemaEntity>(path) {
-    override fun serialize(data: Storage<CinemaEntity>): String {
+    override fun serialize(data: List<CinemaEntity>): String {
         return json.encodeToString(data)
     }
 
-    override fun deserialize(data: String): Storage<CinemaEntity> {
+    override fun deserialize(data: String): List<CinemaEntity> {
         return json.decodeFromString(data)
     }
 
