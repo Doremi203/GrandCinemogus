@@ -2,6 +2,7 @@ package dal.repositories
 
 import dal.Storage
 import dal.entities.EntityWithId
+import dal.exceptions.ElementAlreadyPresentException
 import kotlinx.serialization.json.Json
 import java.io.File
 
@@ -14,8 +15,21 @@ abstract class JsonRepository<T : EntityWithId>(path: String) {
     fun getEntityById(id: Int): T? =
         loadStorageFromFile().data.find { it.id == id }
 
-    fun add(item: T) =
-        loadDataDoActionAndSave { data -> data.add(item) }
+    fun add(item: T) {
+        loadDataDoActionAndSave { data ->
+            if (data.any { it.id == item.id })
+                throw ElementAlreadyPresentException("Element with id ${item.id} already exists")
+            data.add(item) }
+    }
+
+    fun update(item: T) {
+        loadDataDoActionAndSave { data ->
+            val isUpdated = data.removeIf { it.id == item.id }
+            if (!isUpdated)
+                throw NoSuchElementException("No element with id ${item.id}")
+            data.add(item)
+        }
+    }
 
     fun updateIf(item: T): Boolean {
         var isUpdated = false
@@ -25,6 +39,14 @@ abstract class JsonRepository<T : EntityWithId>(path: String) {
                 data.add(item)
         }
         return isUpdated
+    }
+
+    fun delete(id: Int) {
+        loadDataDoActionAndSave { data ->
+            val isDeleted = data.removeIf { it.id == id }
+            if (!isDeleted)
+                throw NoSuchElementException("No element with id $id")
+        }
     }
 
     fun deleteIf(id: Int): Boolean {
