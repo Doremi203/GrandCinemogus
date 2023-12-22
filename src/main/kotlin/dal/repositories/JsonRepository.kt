@@ -6,27 +6,33 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 abstract class JsonRepository<T : EntityWithId>(path: String) {
-    private val file = File(path)
     protected val json = Json { prettyPrint = true }
+    private val file = File(path)
     private val storage: Storage<T>
         get() = loadFromFile()
 
     fun getAllEntities(): MutableList<T> =
         storage.data.toMutableList()
 
+    fun getEntityById(id: Int): T? =
+        storage.data.find { it.id == id }
+
     fun add(item: T) =
-        doActionWithData { data -> data.add(item) }
+        loadDoActionWithDataAndSave { data -> data.add(item) }
 
     fun update(item: T) =
-        doActionWithData { data ->
+        loadDoActionWithDataAndSave { data ->
             data.removeIf { it.id == item.id }
             data.add(item)
         }
 
-    fun delete(id: Int) =
-        doActionWithData { data -> data.removeIf { it.id == id } }
+    fun deleteIf(id: Int): Boolean {
+        var res = false;
+        loadDoActionWithDataAndSave { data -> res = data.removeIf { it.id == id } }
+        return res;
+    }
 
-    private fun doActionWithData(action: (MutableList<T>) -> Unit) {
+    private fun loadDoActionWithDataAndSave(action: (MutableList<T>) -> Unit) {
         val data = storage.data.toMutableList()
         action(data)
         saveToFile(Storage(data))
