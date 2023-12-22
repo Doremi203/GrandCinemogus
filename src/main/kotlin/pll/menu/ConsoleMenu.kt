@@ -1,6 +1,9 @@
 package pll.menu
 
+import di.Di
+
 class ConsoleMenu(
+    private val name: String,
     private val menuItems: List<MenuItem>,
 ) : Menu {
     data class MenuItem (
@@ -9,19 +12,35 @@ class ConsoleMenu(
     )
 
     override fun show() {
-        println("Menu:")
+        println(name)
         menuItems.forEachIndexed { index, item ->
             println("${index + 1}. ${item.title}")
         }
+        println("0. Выход")
     }
 
-    override fun processInput() {
+    override fun processInputIfNotExit(): Boolean {
         val input = readlnOrNull()?.toIntOrNull()
-        if (input == null || input !in menuItems.indices) {
-            println("Invalid input")
-            return
+        if (input == null || (input - 1 !in menuItems.indices && input != 0)) {
+            println("Неверный ввод")
+            return true
         }
+        if (input == 0)
+            return false
 
-        menuItems[input].action()
+        menuItems[input - 1].action()
+        return true
+    }
+
+    override fun handle() {
+        do {
+            var isExit = false
+            try {
+                show()
+                isExit = !processInputIfNotExit()
+            } catch (e: Exception) {
+                println("Произошла ошибка: ${e.message}")
+            }
+        } while(!isExit)
     }
 }

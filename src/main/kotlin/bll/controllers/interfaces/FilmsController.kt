@@ -4,9 +4,10 @@ import pll.models.input.FilmData
 import pll.models.output.FilmOutput
 
 interface FilmsController {
-    fun getFilms(): List<FilmOutput>
-    fun addFilm(newFilmData: FilmData)
-    fun deleteFilm(filmId: Int)
-    fun editFilm(filmData: FilmData, filmId: Int)
-
+    fun getAllFilms(): List<FilmOutput>
+    fun getFilmById(filmId: Int): FilmOutput
+    fun addFilm(newFilmData: FilmData): Result<String>
+    fun deleteFilm(filmId: Int): Result<String>
+    fun editFilmTitle(filmId: Int, newTitle: String): Result<String>
+    fun editFilmActors(filmId: Int, newActors: List<String>): Result<String>
 }
