@@ -1,7 +1,5 @@
 package pll.menu
 
-import di.Di
-
 class ConsoleMenu(
     private val name: String,
     private val menuItems: List<MenuItem>,

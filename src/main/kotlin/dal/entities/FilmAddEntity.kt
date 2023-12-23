@@ -1,6 +1,6 @@
-package pll.models.output
+package dal.entities
 
-data class FilmOutput(
+data class FilmAddEntity(
     val title: String,
     val actors: List<String>,
 )

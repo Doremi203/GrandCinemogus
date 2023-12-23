@@ -1,22 +1,15 @@
 package bll.controllers
 
 import bll.controllers.interfaces.FilmValidator
-import dal.entities.FilmEntity
-import dal.repositories.JsonRepository
 
-class DefaultFilmValidator(
-    private val filmsRepository: JsonRepository<FilmEntity>
-) : FilmValidator {
-    override fun validateTitle(title: String): Boolean {
-        if (title.isEmpty()) {
-            return false
-        }
-
-        val films = filmsRepository.getAllEntities()
-        return films.none { it.title == title }
+class DefaultFilmValidator : FilmValidator {
+    override fun validateTitle(title: String) {
+        if (title.isEmpty())
+            throw IllegalArgumentException("Название фильма не может быть пустым")
     }
 
-     override fun validateActors(actors: List<String>): Boolean {
-        return actors.isNotEmpty()
-    }
+     override fun validateActors(actors: List<String>) {
+         if (actors.isEmpty())
+                throw IllegalArgumentException("Список актеров не может быть пустыми")
+     }
 }

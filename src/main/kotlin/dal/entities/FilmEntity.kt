@@ -1,10 +1,12 @@
 package dal.entities
 
 import kotlinx.serialization.Serializable
+import java.util.*
 
 @Serializable
 data class FilmEntity(
-    override val id: Int,
+    @Serializable(with = UUIDSerializer::class)
+    override val id: UUID,
     val title: String,
-    val actors: MutableList<String>,
+    val actors: List<String>,
 ) : EntityWithId()

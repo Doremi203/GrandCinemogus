@@ -1,40 +1,42 @@
 package pll.menu
 
+import dal.entities.FilmAddEntity
 import di.Di
-import pll.models.input.FilmData
+import pll.exceptions.NoFilmsException
+import pll.models.output.FilmOutput
 
 fun showAllFilms() {
-    val films = Di.filmsController.getAllFilms()
+    val films = Di.filmsRepository.getAll().map { FilmOutput(it.title, it.actors) }
 
     if (films.isEmpty()) {
-        println("Список фильмов пуст")
-        return
+        throw NoFilmsException("Список фильмов пуст")
     }
 
     println("Список фильмов:")
-    films.forEach { film ->
-        println("Id: ${film.id}. ${film.title}")
+    films.forEachIndexed { id, film ->
+        println("${id}. ${film.title}")
     }
 }
 
 fun addFilm() {
-println("Введите название фильма:")
+    println("Введите название фильма:")
     val title = Di.inputReader.readStringUntilNotNull()
 
     println("Введите актеров через запятую:")
     val actors = readlnOrNull()?.split(",")?.toMutableList() ?: mutableListOf()
 
-    val newFilmData = FilmData(title, actors)
+    Di.filmsRepository.add(FilmAddEntity(title, actors))
 
-    Di.filmsController.addFilm(newFilmData)
+    println("Фильм: $title успешно добавлен")
 }
 
 fun deleteFilm() {
-    println("Введите id фильма:")
-    val filmId = Di.inputReader.readIntUntilNotNull()
+    println("Введите название фильма для удаления:")
+    val title = Di.inputReader.readStringUntilNotNull()
 
-    val res = Di.filmsController.deleteFilm(filmId)
-    println(res)
+    Di.filmsRepository.delete(Di.filmIdService.getFilmIdFromTitle(title))
+
+    println("Фильм: $title успешно удален")
 }
 
 fun processEditFilmMenu() {
