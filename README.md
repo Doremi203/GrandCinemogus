@@ -55,3 +55,6 @@ Each of these files contains a class that extends `ConsoleMenu`, which provides 
 6. `inputReader`: This is an instance of `ConsoleInputReader` which is responsible for reading user input from the console.
 
 7. `registrationMenu`, `mainMenu`, `filmsMenu`, `filmEditMenu`: These are instances of various console menus that provide user interfaces for different parts of the application.
+
+P.S. Диаграмму классов пришлось автоматически сгенерировать, так как времени на создание её вручную не хватило, слишком большой проект получился:)
+Надеюсь получилось сделать SOLIDный проект.
