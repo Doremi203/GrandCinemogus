@@ -83,6 +83,11 @@ object Di {
         )
 
     val filmEditMenu: FilmEditConsoleMenu
-        get() = FilmEditConsoleMenu()
+        get() = FilmEditConsoleMenu(
+            filmsRepository,
+            filmIdService,
+            filmValidator,
+            inputReader
+        )
 
 }

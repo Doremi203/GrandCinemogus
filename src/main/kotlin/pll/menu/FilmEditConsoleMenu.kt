@@ -1,12 +1,19 @@
 package pll.menu
 
+import bll.controllers.interfaces.FilmValidator
+import bll.services.FilmIdService
 import dal.entities.FilmUpdateEntity
+import dal.repositories.interfaces.FilmsRepository
 import di.Di
+import pll.InputReader
 import pll.exceptions.NoFilmsException
 import java.util.*
 
 class FilmEditConsoleMenu(
-
+    private val filmsRepository: FilmsRepository,
+    private val filmIdService: FilmIdService,
+    private val filmValidator: FilmValidator,
+    private val inputReader: InputReader
 ) : ConsoleMenu("Меню редактирования фильма") {
 
     override val menuItems: List<MenuItem> = listOf(
@@ -17,10 +24,10 @@ class FilmEditConsoleMenu(
     private fun editFilmTitle() {
         processEdit { filmId ->
             println("Введите новое название фильма:")
-            val newTitle = Di.inputReader.readStringUntilNotNull()
-            Di.filmValidator.validateTitle(newTitle)
+            val newTitle = inputReader.readStringUntilNotNull()
+            filmValidator.validateTitle(newTitle)
 
-            Di.filmsRepository.update(
+            filmsRepository.update(
                 filmId,
                 FilmUpdateEntity(title = newTitle)
             )
@@ -34,9 +41,9 @@ class FilmEditConsoleMenu(
             println("Введите новых актеров фильма через запятую:")
             val newActors = Di.inputReader.readStringUntilNotNull()
                 .split(",")
-            Di.filmValidator.validateActors(newActors)
+            filmValidator.validateActors(newActors)
 
-            Di.filmsRepository.update(
+            filmsRepository.update(
                 filmId,
                 FilmUpdateEntity(actors = newActors)
             )
@@ -48,10 +55,10 @@ class FilmEditConsoleMenu(
     private fun processEdit(editActions: (UUID) -> Unit) {
         handleExceptions {
             println("Введите название фильма для редактирования:")
-            val title = Di.inputReader.readStringUntilNotNull()
-            Di.filmValidator.validateTitle(title)
+            val title = inputReader.readStringUntilNotNull()
+            filmValidator.validateTitle(title)
 
-            editActions(Di.filmIdService.getIdFromTitle(title))
+            editActions(filmIdService.getIdFromTitle(title))
         }
     }
 
