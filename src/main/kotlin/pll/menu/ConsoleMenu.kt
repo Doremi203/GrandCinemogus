@@ -3,7 +3,7 @@ package pll.menu
 sealed class ConsoleMenu(
     private val name: String,
 ) : Menu {
-    data class MenuItem (
+    data class MenuItem(
         val title: String,
         val action: () -> Unit,
     )

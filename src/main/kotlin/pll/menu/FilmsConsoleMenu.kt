@@ -84,7 +84,7 @@ class FilmsConsoleMenu(
             } catch (e: Exception) {
                 println("Произошла ошибка: ${e.message}")
             }
-        } while(!isExit)
+        } while (!isExit)
     }
 
     private fun handleExceptions(block: () -> Unit) {

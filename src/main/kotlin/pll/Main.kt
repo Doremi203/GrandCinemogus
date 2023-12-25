@@ -3,14 +3,17 @@ package pll
 import di.Di
 
 fun main() {
-    val mainMenu = Di.mainMenu
-    do {
-        var isExit = false
+    while (true) {
         try {
-            mainMenu.show()
-            isExit = !mainMenu.processInputIfNotExit()
+            Di.registrationMenu.show()
+            if (Di.registrationMenu.processInputIfNotExit())
+                break
+
+            Di.mainMenu.show()
+            if (!Di.mainMenu.processInputIfNotExit())
+                break
         } catch (e: Exception) {
             println("Произошла ошибка: ${e.message}")
         }
-    } while(!isExit)
+    }
 }
