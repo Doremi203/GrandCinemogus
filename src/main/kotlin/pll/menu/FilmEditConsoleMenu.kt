@@ -18,7 +18,8 @@ class FilmEditConsoleMenu(
 
     override val menuItems: List<MenuItem> = listOf(
         MenuItem("Редактировать название фильма", ::editFilmTitle),
-        MenuItem("Редактировать актеров фильма", ::editFilmActors)
+        MenuItem("Редактировать актеров фильма", ::editFilmActors),
+        MenuItem("Редактировать длительность фильма", ::editFilmDuration)
     )
 
     private fun editFilmTitle() {
@@ -49,6 +50,21 @@ class FilmEditConsoleMenu(
             )
 
             println("Список актеров изменен на: $newActors")
+        }
+    }
+
+    private fun editFilmDuration() {
+        processEdit { filmId ->
+            println("Введите новую длительность фильма:")
+            val newDuration = inputReader.readIntUntilNotNull()
+            filmValidator.validateDuration(newDuration)
+
+            filmsRepository.update(
+                filmId,
+                FilmUpdateEntity(durationInMinutes = newDuration)
+            )
+
+            println("Длительность фильма изменена на: $newDuration")
         }
     }
 

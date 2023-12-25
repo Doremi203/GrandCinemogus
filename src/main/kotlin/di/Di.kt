@@ -32,18 +32,18 @@ import pll.menu.MainConsoleMenu
 import pll.menu.RegistrationConsoleMenu
 
 object Di {
-    val configReader = ConfigReader("src/main/config/config.json")
+    private val configReader = ConfigReader("src/main/config/config.json")
 
-    val filmsRepository: FilmsRepository
+    private val filmsRepository: FilmsRepository
         get() = FilmsJsonRepository(configReader.config.filmsJsonPath)
 
     val sessionsRepository: SessionsRepository
         get() = SessionsJsonRepository(configReader.config.sessionsJsonPath)
 
-    val cinemaRepository: CinemaRepository
+    private val cinemaRepository: CinemaRepository
         get() = CinemaJsonRepository(configReader.config.cinemaJsonPath)
 
-    val usersRepository: UsersRepository
+    private val usersRepository: UsersRepository
         get() = UsersJsonRepository(configReader.config.usersJsonPath)
 
     val sessionsController: SessionsController
@@ -53,7 +53,7 @@ object Di {
             configReader.config.cinemaId
         )
 
-    val filmsController: FilmsController
+    private val filmsController: FilmsController
         get() = DefaultFilmsController(
             sessionsRepository,
             filmsRepository,
@@ -66,21 +66,21 @@ object Di {
             ticketsService
         )
 
-    val registrationService: RegistrationService
+    private val registrationService: RegistrationService
         get() = DefaultRegistrationService(
             usersRepository
         )
 
-    val ticketsService: TicketService
+    private val ticketsService: TicketService
         get() = DefaultTicketService()
 
-    val filmIdService: FilmIdService
+    private val filmIdService: FilmIdService
         get() = DefaultFilmIdService(filmsRepository)
 
-    val filmValidator: FilmValidator
+    private val filmValidator: FilmValidator
         get() = DefaultFilmValidator()
 
-    val registrationValidator: RegistrationValidator
+    private val registrationValidator: RegistrationValidator
         get() = DefaultRegistrationValidator()
 
     val inputReader: InputReader
@@ -100,7 +100,7 @@ object Di {
             filmIdService,
             inputReader
         )
-    val filmsMenu: FilmsConsoleMenu
+    private val filmsMenu: FilmsConsoleMenu
         get() = FilmsConsoleMenu(
             filmsRepository,
             filmsController,
@@ -109,7 +109,7 @@ object Di {
             filmEditMenu
         )
 
-    val filmEditMenu: FilmEditConsoleMenu
+    private val filmEditMenu: FilmEditConsoleMenu
         get() = FilmEditConsoleMenu(
             filmsRepository,
             filmIdService,
