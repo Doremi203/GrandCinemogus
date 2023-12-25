@@ -18,12 +18,14 @@ class RegistrationConsoleMenu(
     private fun processRegistration() {
         processOperationWithLoginAndPassword { login, password ->
             registrationService.registerUser(login, password)
+            println("Вы успешно зарегистрировались")
         }
     }
 
     private fun processLogin() {
         processOperationWithLoginAndPassword { login, password ->
             registrationService.login(login, password)
+            println("Вы успешно вошли в систему")
         }
     }
 

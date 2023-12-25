@@ -1,1 +1,23 @@
-[]
+[
+    {
+        "id": "f641890e-0f1d-4305-8acf-b64c3fc160d5",
+        "name": "Amogus",
+        "rowEntities": [
+            {
+                "seats": 12
+            },
+            {
+                "seats": 10
+            },
+            {
+                "seats": 10
+            },
+            {
+                "seats": 8
+            },
+            {
+                "seats": 8
+            }
+        ]
+    }
+]

@@ -6,7 +6,7 @@ fun main() {
     while (true) {
         try {
             Di.registrationMenu.show()
-            if (Di.registrationMenu.processInputIfNotExit())
+            if (!Di.registrationMenu.processInputIfNotExit())
                 break
 
             Di.mainMenu.show()

@@ -1,0 +1,7 @@
+{
+    "filmsJsonPath": "src/main/resources/films.json",
+    "sessionsJsonPath": "src/main/resources/sessions.json",
+    "cinemaJsonPath": "src/main/resources/cinema.json",
+    "usersJsonPath": "src/main/resources/users.json",
+    "cinemaId": "f641890e-0f1d-4305-8acf-b64c3fc160d5"
+}

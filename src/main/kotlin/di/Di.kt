@@ -19,23 +19,25 @@ import pll.menu.MainConsoleMenu
 import pll.menu.RegistrationConsoleMenu
 
 object Di {
+    val configReader = ConfigReader("src/main/config/config.json")
+
     val filmsRepository: FilmsRepository
-        get() = FilmsJsonRepository("src/main/resources/films.json")
+        get() = FilmsJsonRepository(configReader.config.filmsJsonPath)
 
     val sessionsRepository: SessionsRepository
-        get() = SessionsJsonRepository("src/main/resources/sessions.json")
+        get() = SessionsJsonRepository(configReader.config.sessionsJsonPath)
 
     val cinemaRepository: CinemaRepository
-        get() = CinemaJsonRepository("src/main/resources/cinema.json")
+        get() = CinemaJsonRepository(configReader.config.cinemaJsonPath)
 
     val usersRepository: UsersRepository
-        get() = UsersJsonRepository("src/main/resources/users.json")
+        get() = UsersJsonRepository(configReader.config.usersJsonPath)
 
     val sessionsController: SessionsController
         get() = DefaultSessionsController(
             sessionsRepository,
             cinemaRepository,
-            cinemaRepository.getAll()[0].id
+            configReader.config.cinemaId
         )
 
     val filmsController: FilmsController
