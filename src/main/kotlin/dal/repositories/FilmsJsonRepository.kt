@@ -4,10 +4,10 @@ import dal.entities.FilmAddEntity
 import dal.entities.FilmEntity
 import dal.entities.FilmUpdateEntity
 import dal.exceptions.ElementAlreadyPresentException
-import dal.exceptions.IdNotPresentException
 import dal.repositories.interfaces.FilmsRepository
 import kotlinx.serialization.encodeToString
 import java.util.*
+import kotlin.NoSuchElementException
 
 class FilmsJsonRepository(
     path: String
@@ -27,7 +27,7 @@ class FilmsJsonRepository(
     override fun update(id: UUID, item: FilmUpdateEntity) {
         loadDataDoActionAndSave { data ->
             val oldFilm = data.find { it.id == id }
-                ?: throw IdNotPresentException("Нет фильма с таким $id")
+                ?: throw NoSuchElementException("Нет фильма с таким $id")
             data.remove(oldFilm)
 
             data.add(
