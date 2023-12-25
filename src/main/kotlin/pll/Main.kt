@@ -4,7 +4,6 @@ import di.Di
 
 fun main() {
     runRegistration()
-    runApp()
 }
 
 private fun runRegistration() {
@@ -13,6 +12,8 @@ private fun runRegistration() {
             Di.registrationMenu.show()
             if (!Di.registrationMenu.processInputIfNotExit())
                 break
+
+            runApp()
         } catch (e: Exception) {
             println("Произошла ошибка: ${e.message}")
         }
@@ -22,10 +23,6 @@ private fun runRegistration() {
 private fun runApp() {
     while (true) {
         try {
-            Di.registrationMenu.show()
-            if (!Di.registrationMenu.processInputIfNotExit())
-                break
-
             Di.mainMenu.show()
             if (!Di.mainMenu.processInputIfNotExit())
                 break
