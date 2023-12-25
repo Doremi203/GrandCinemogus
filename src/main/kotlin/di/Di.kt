@@ -1,12 +1,22 @@
 package di
 
 import bll.controllers.DefaultFilmValidator
+import bll.controllers.DefaultFilmsController
+import bll.controllers.DefaultSessionsController
 import bll.controllers.interfaces.FilmValidator
+import bll.controllers.interfaces.FilmsController
+import bll.controllers.interfaces.SessionsController
 import bll.services.DefaultFilmIdService
 import bll.services.FilmIdService
 import dal.entities.CinemaEntity
 import dal.entities.SessionEntity
-import dal.repositories.*
+import dal.repositories.CinemaJsonRepository
+import dal.repositories.FilmsJsonRepository
+import dal.repositories.JsonRepository
+import dal.repositories.SessionsJsonRepository
+import dal.repositories.interfaces.CinemaRepository
+import dal.repositories.interfaces.FilmsRepository
+import dal.repositories.interfaces.SessionsRepository
 import pll.ConsoleInputReader
 import pll.InputReader
 import pll.menu.*
@@ -14,10 +24,24 @@ import pll.menu.*
 object Di {
     val filmsRepository: FilmsRepository
         get() = FilmsJsonRepository("src/main/resources/films.json")
-    val sessionsRepository: JsonRepository<SessionEntity>
+    val sessionsRepository: SessionsRepository
         get() = SessionsJsonRepository("src/main/resources/sessions.json")
-    val cinemaRepository: JsonRepository<CinemaEntity>
+    val cinemaRepository: CinemaRepository
         get() = CinemaJsonRepository("src/main/resources/cinema.json")
+
+    val sessionsController: SessionsController
+        get() = DefaultSessionsController(
+            sessionsRepository,
+            cinemaRepository,
+            cinemaRepository.getAll()[0].id
+        )
+
+    val filmsController: FilmsController
+        get() = DefaultFilmsController(
+            sessionsRepository,
+            filmsRepository,
+            filmIdService
+        )
 
     val filmIdService: FilmIdService
         get() = DefaultFilmIdService(filmsRepository)
@@ -28,48 +52,27 @@ object Di {
     val inputReader: InputReader
         get() = ConsoleInputReader()
 
-    val mainMenu: Menu
-        get() = ConsoleMenu("Главное меню",
-            listOf(
-                ConsoleMenu.MenuItem("Показать меню фильмов", ::processFilmsMenu),
-                ConsoleMenu.MenuItem("Показать меню сеансов", ::processSessionsMenu),
-                ConsoleMenu.MenuItem("Продать билет", ::processTicketsMenu),
-                ConsoleMenu.MenuItem("Отметить посетителя", ::tagVisitor),
-            )
+    val mainMenu: MainConsoleMenu
+        get() = MainConsoleMenu(
+            filmsMenu,
+            ticketsMenu,
+            filmValidator,
+            filmIdService,
+            inputReader
         )
-    val filmsMenu: Menu
-        get() = ConsoleMenu("Меню фильмов",
-            listOf(
-                ConsoleMenu.MenuItem("Показать список фильмов", ::showAllFilms),
-                ConsoleMenu.MenuItem("Добавить фильм", ::addFilm),
-                ConsoleMenu.MenuItem("Удалить фильм", ::deleteFilm),
-                ConsoleMenu.MenuItem("Редактировать фильм", ::processEditFilmMenu),
-            )
+    val filmsMenu: FilmsConsoleMenu
+        get() = FilmsConsoleMenu(
+            filmsRepository,
+            filmsController,
+            filmIdService,
+            inputReader,
+            filmEditMenu
         )
 
-    val filmEditMenu: Menu
-        get() = ConsoleMenu("Меню редактирования фильмов",
-            listOf(
-                ConsoleMenu.MenuItem("Изменить название", ::editFilmTitle),
-                ConsoleMenu.MenuItem("Изменить актеров", ::editFilmActors),
-            )
-        )
+    val filmEditMenu: FilmEditConsoleMenu
+        get() = FilmEditConsoleMenu()
 
-    val sessionsMenu: Menu
-        get() = ConsoleMenu("Меню сеансов",
-            listOf(
-                ConsoleMenu.MenuItem("Показать список сеансов", ::showSessions),
-                ConsoleMenu.MenuItem("Выбрать сеанс", ::addSession),
-                ConsoleMenu.MenuItem("Создать сеанс", ::deleteSession),
-                ConsoleMenu.MenuItem("Удалить сеанс", ::editSession),
-            )
-        )
 
-    val ticketsMenu: Menu
-        get() = ConsoleMenu("Меню билетов",
-            listOf(
-                ConsoleMenu.MenuItem("Продать билет", ::sellTicket),
-                ConsoleMenu.MenuItem("Вернуть билет", ::returnTicket),
-            )
-        )
+    val ticketsMenu: TicketsConsoleMenu
+        get() = TicketsConsoleMenu()
 }

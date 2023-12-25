@@ -9,4 +9,5 @@ data class FilmEntity(
     override val id: UUID,
     val title: String,
     val actors: List<String>,
+    val durationInMinutes: Int
 ) : EntityWithId()

@@ -1,10 +1,11 @@
-package pll.models.input
+package dal.entities
 
 import kotlinx.datetime.LocalDateTime
-import java.util.UUID
+import java.util.*
 
-data class SessionData (
+data class SessionAddEntity(
     val filmId: UUID,
     val dateTime: LocalDateTime,
     val ticketPrice: Double,
+    val seats: List<List<SeatStateEntity>>,
 )

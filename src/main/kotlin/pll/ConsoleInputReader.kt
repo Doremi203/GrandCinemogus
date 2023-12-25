@@ -1,5 +1,8 @@
 package pll
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
+
 class ConsoleInputReader : InputReader {
     override fun readIntUntilNotNull(): Int {
         var input: Int? = null
@@ -13,6 +16,31 @@ class ConsoleInputReader : InputReader {
         var input: String? = null
         while (input == null) {
             input = readlnOrNull()
+        }
+        return input
+    }
+
+    override fun readDateTimeUntilNotNull(): LocalDateTime {
+        var input: String? = null
+        while (input == null) {
+            input = readlnOrNull()
+        }
+        val split = input.split(" ")
+        val date = split[0].split(".").map { it.toInt() }
+        val time = split[1].split(":").map { it.toInt() }
+        return LocalDateTime(
+            date[2],
+            date[1],
+            date[0],
+            time[0],
+            time[1]
+        )
+    }
+
+    override fun readDoubleUntilNotNull(): Double {
+        var input: Double? = null
+        while (input == null) {
+            input = readlnOrNull()?.toDoubleOrNull()
         }
         return input
     }

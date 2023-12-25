@@ -1,13 +1,14 @@
 package pll.menu
 
-class ConsoleMenu(
+sealed class ConsoleMenu(
     private val name: String,
-    private val menuItems: List<MenuItem>,
 ) : Menu {
     data class MenuItem (
         val title: String,
         val action: () -> Unit,
     )
+
+    abstract val menuItems: List<MenuItem>
 
     override fun show() {
         println(name)

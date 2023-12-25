@@ -1,4 +1,4 @@
-package dal.repositories
+package dal.repositories.interfaces
 
 import dal.entities.FilmAddEntity
 import dal.entities.FilmEntity
@@ -8,7 +8,6 @@ import java.util.*
 interface FilmsRepository {
     fun getAll(): List<FilmEntity>
     fun getById(id: UUID): FilmEntity
-    fun getByTitle(title: String): FilmEntity
     fun add(item: FilmAddEntity)
     fun update(id: UUID, item: FilmUpdateEntity)
     fun delete(id: UUID)
