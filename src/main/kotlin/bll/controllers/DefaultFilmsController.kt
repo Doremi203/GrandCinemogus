@@ -1,7 +1,7 @@
 package bll.controllers
 
 import bll.controllers.interfaces.FilmsController
-import bll.services.FilmIdService
+import bll.services.interfaces.FilmIdService
 import dal.repositories.interfaces.FilmsRepository
 import dal.repositories.interfaces.SessionsRepository
 

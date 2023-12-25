@@ -1,6 +1,6 @@
-package bll.controllers
+package bll.validators
 
-import bll.controllers.interfaces.FilmValidator
+import bll.validators.interfaces.FilmValidator
 
 class DefaultFilmValidator : FilmValidator {
     override fun validateTitle(title: String) {

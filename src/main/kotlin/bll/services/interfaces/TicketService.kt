@@ -1,4 +1,4 @@
-package bll.services
+package bll.services.interfaces
 
 import dal.entities.SeatStateEntity
 

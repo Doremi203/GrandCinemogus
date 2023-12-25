@@ -1,8 +1,21 @@
 package di
 
-import bll.controllers.*
-import bll.controllers.interfaces.*
-import bll.services.*
+import bll.controllers.DefaultFilmsController
+import bll.controllers.DefaultSessionsController
+import bll.controllers.DefaultTicketsController
+import bll.controllers.interfaces.FilmsController
+import bll.controllers.interfaces.SessionsController
+import bll.controllers.interfaces.TicketsController
+import bll.services.DefaultFilmIdService
+import bll.services.DefaultRegistrationService
+import bll.services.DefaultTicketService
+import bll.services.interfaces.FilmIdService
+import bll.services.interfaces.RegistrationService
+import bll.services.interfaces.TicketService
+import bll.validators.DefaultFilmValidator
+import bll.validators.DefaultRegistrationValidator
+import bll.validators.interfaces.FilmValidator
+import bll.validators.interfaces.RegistrationValidator
 import dal.repositories.CinemaJsonRepository
 import dal.repositories.FilmsJsonRepository
 import dal.repositories.SessionsJsonRepository
@@ -59,9 +72,7 @@ object Di {
         )
 
     val ticketsService: TicketService
-        get() = DefaultTicketService(
-            sessionsRepository
-        )
+        get() = DefaultTicketService()
 
     val filmIdService: FilmIdService
         get() = DefaultFilmIdService(filmsRepository)

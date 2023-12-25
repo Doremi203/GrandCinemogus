@@ -1,4 +1,4 @@
-package bll.services
+package bll.services.interfaces
 
 interface RegistrationService {
     fun registerUser(login: String, password: String)

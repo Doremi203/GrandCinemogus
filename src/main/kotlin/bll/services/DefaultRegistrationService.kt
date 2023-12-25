@@ -1,6 +1,7 @@
 package bll.services
 
 import bll.exceptions.UserAlreadyRegisteredException
+import bll.services.interfaces.RegistrationService
 import dal.entities.UserAddEntity
 import dal.repositories.interfaces.UsersRepository
 import java.security.MessageDigest
@@ -27,7 +28,7 @@ class DefaultRegistrationService(
         val users = usersRepository.getAll()
         val hashedPassword = hashPassword(password)
 
-        val user = users.find { it.login == login && it.password == hashedPassword }
+        users.find { it.login == login && it.password == hashedPassword }
             ?: throw IllegalArgumentException("Неверный логин или пароль")
     }
 

@@ -1,7 +1,7 @@
 package pll.menu
 
-import bll.controllers.interfaces.FilmValidator
-import bll.services.FilmIdService
+import bll.services.interfaces.FilmIdService
+import bll.validators.interfaces.FilmValidator
 import di.Di
 import pll.InputReader
 import pll.exceptions.NoFilmsException

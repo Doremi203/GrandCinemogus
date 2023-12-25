@@ -1,4 +1,4 @@
-package bll.controllers.interfaces
+package bll.validators.interfaces
 
 interface FilmValidator {
     fun validateTitle(title: String)

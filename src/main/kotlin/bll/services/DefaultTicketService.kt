@@ -3,12 +3,10 @@ package bll.services
 import bll.exceptions.TicketAlreadySoldException
 import bll.exceptions.TicketAlreadyUsedException
 import bll.exceptions.TicketNotSoldException
+import bll.services.interfaces.TicketService
 import dal.entities.SeatStateEntity
-import dal.repositories.interfaces.SessionsRepository
 
-class DefaultTicketService(
-    private val sessionsRepository: SessionsRepository,
-) : TicketService {
+class DefaultTicketService : TicketService {
     override fun sellTicket(
         seats: MutableList<MutableList<SeatStateEntity>>,
         row: Int,

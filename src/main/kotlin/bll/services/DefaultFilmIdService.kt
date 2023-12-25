@@ -1,5 +1,6 @@
 package bll.services
 
+import bll.services.interfaces.FilmIdService
 import dal.repositories.interfaces.FilmsRepository
 import java.util.*
 

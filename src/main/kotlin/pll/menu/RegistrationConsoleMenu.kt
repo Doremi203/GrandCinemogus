@@ -1,8 +1,8 @@
 package pll.menu
 
-import bll.controllers.interfaces.RegistrationValidator
 import bll.exceptions.UserAlreadyRegisteredException
-import bll.services.RegistrationService
+import bll.services.interfaces.RegistrationService
+import bll.validators.interfaces.RegistrationValidator
 import pll.InputReader
 
 class RegistrationConsoleMenu(

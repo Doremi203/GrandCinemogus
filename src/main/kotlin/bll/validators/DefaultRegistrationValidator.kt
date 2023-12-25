@@ -1,6 +1,6 @@
-package bll.controllers
+package bll.validators
 
-import bll.controllers.interfaces.RegistrationValidator
+import bll.validators.interfaces.RegistrationValidator
 
 class DefaultRegistrationValidator : RegistrationValidator {
     override fun validateLogin(login: String) {

@@ -2,7 +2,7 @@ package di
 
 import dal.entities.UUIDSerializer
 import kotlinx.serialization.Serializable
-import java.util.UUID
+import java.util.*
 
 @Serializable
 data class Config(

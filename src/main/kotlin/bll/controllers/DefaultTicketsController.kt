@@ -1,7 +1,7 @@
 package bll.controllers
 
 import bll.controllers.interfaces.TicketsController
-import bll.services.TicketService
+import bll.services.interfaces.TicketService
 import dal.entities.SeatStateEntity
 import dal.entities.SessionUpdateEntity
 import dal.repositories.interfaces.SessionsRepository

@@ -1,7 +1,7 @@
 package pll.menu
 
-import bll.controllers.interfaces.FilmValidator
 import bll.controllers.interfaces.FilmsController
+import bll.validators.interfaces.FilmValidator
 import dal.entities.FilmAddEntity
 import dal.repositories.interfaces.FilmsRepository
 import pll.InputReader
