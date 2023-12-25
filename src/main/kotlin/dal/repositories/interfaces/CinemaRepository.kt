@@ -1,6 +1,7 @@
 package dal.repositories.interfaces
 
-import dal.entities.*
+import dal.entities.CinemaAddEntity
+import dal.entities.CinemaEntity
 import java.util.*
 
 interface CinemaRepository {

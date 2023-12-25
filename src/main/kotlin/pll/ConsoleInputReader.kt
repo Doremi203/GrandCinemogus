@@ -1,7 +1,6 @@
 package pll
 
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toLocalDateTime
 
 class ConsoleInputReader : InputReader {
     override fun readIntUntilNotNull(): Int {
@@ -26,8 +25,13 @@ class ConsoleInputReader : InputReader {
             input = readlnOrNull()
         }
         val split = input.split(" ")
+        if (split.size != 2)
+            throw IllegalArgumentException("Неверный формат даты")
+
         val date = split[0].split(".").map { it.toInt() }
         val time = split[1].split(":").map { it.toInt() }
+        if (date.size != 3 || time.size != 2)
+            throw IllegalArgumentException("Неверный формат даты")
         return LocalDateTime(
             date[2],
             date[1],

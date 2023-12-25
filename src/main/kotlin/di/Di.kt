@@ -3,23 +3,26 @@ package di
 import bll.controllers.DefaultFilmValidator
 import bll.controllers.DefaultFilmsController
 import bll.controllers.DefaultSessionsController
+import bll.controllers.DefaultTicketsController
 import bll.controllers.interfaces.FilmValidator
 import bll.controllers.interfaces.FilmsController
 import bll.controllers.interfaces.SessionsController
+import bll.controllers.interfaces.TicketsController
 import bll.services.DefaultFilmIdService
+import bll.services.DefaultTicketService
 import bll.services.FilmIdService
-import dal.entities.CinemaEntity
-import dal.entities.SessionEntity
+import bll.services.TicketService
 import dal.repositories.CinemaJsonRepository
 import dal.repositories.FilmsJsonRepository
-import dal.repositories.JsonRepository
 import dal.repositories.SessionsJsonRepository
 import dal.repositories.interfaces.CinemaRepository
 import dal.repositories.interfaces.FilmsRepository
 import dal.repositories.interfaces.SessionsRepository
 import pll.ConsoleInputReader
 import pll.InputReader
-import pll.menu.*
+import pll.menu.FilmEditConsoleMenu
+import pll.menu.FilmsConsoleMenu
+import pll.menu.MainConsoleMenu
 
 object Di {
     val filmsRepository: FilmsRepository
@@ -43,6 +46,17 @@ object Di {
             filmIdService
         )
 
+    val ticketsController: TicketsController
+        get() = DefaultTicketsController(
+            sessionsRepository,
+            ticketsService
+        )
+
+    val ticketsService: TicketService
+        get() = DefaultTicketService(
+            sessionsRepository
+        )
+
     val filmIdService: FilmIdService
         get() = DefaultFilmIdService(filmsRepository)
 
@@ -55,7 +69,6 @@ object Di {
     val mainMenu: MainConsoleMenu
         get() = MainConsoleMenu(
             filmsMenu,
-            ticketsMenu,
             filmValidator,
             filmIdService,
             inputReader
@@ -64,7 +77,7 @@ object Di {
         get() = FilmsConsoleMenu(
             filmsRepository,
             filmsController,
-            filmIdService,
+            filmValidator,
             inputReader,
             filmEditMenu
         )
@@ -72,7 +85,4 @@ object Di {
     val filmEditMenu: FilmEditConsoleMenu
         get() = FilmEditConsoleMenu()
 
-
-    val ticketsMenu: TicketsConsoleMenu
-        get() = TicketsConsoleMenu()
 }

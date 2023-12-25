@@ -31,15 +31,4 @@ sealed class ConsoleMenu(
         return true
     }
 
-    override fun handle() {
-        do {
-            var isExit = false
-            try {
-                show()
-                isExit = !processInputIfNotExit()
-            } catch (e: Exception) {
-                println("Произошла ошибка: ${e.message}")
-            }
-        } while(!isExit)
-    }
 }

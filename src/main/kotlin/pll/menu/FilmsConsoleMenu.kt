@@ -1,12 +1,9 @@
 package pll.menu
 
-import bll.controllers.DefaultFilmsController
+import bll.controllers.interfaces.FilmValidator
 import bll.controllers.interfaces.FilmsController
-import bll.services.FilmIdService
 import dal.entities.FilmAddEntity
 import dal.repositories.interfaces.FilmsRepository
-import di.Di
-import pll.ConsoleInputReader
 import pll.InputReader
 import pll.exceptions.NoFilmsException
 import pll.models.output.FilmOutput
@@ -14,7 +11,7 @@ import pll.models.output.FilmOutput
 class FilmsConsoleMenu(
     private val filmsRepository: FilmsRepository,
     private val filmsController: FilmsController,
-    private val filmIdService: FilmIdService,
+    private val filmValidator: FilmValidator,
     private val inputReader: InputReader,
     private val filmEditMenu: ConsoleMenu
 ) : ConsoleMenu("Меню фильмов") {
@@ -27,7 +24,9 @@ class FilmsConsoleMenu(
     )
 
     fun showAllFilms() {
-        val films = filmsRepository.getAll().map { FilmOutput(it.title, it.actors, it.durationInMinutes) }
+        val films = filmsRepository.getAll().map {
+            FilmOutput(it.title, it.actors, it.durationInMinutes)
+        }
 
         if (films.isEmpty()) {
             throw NoFilmsException("Список фильмов пуст")
@@ -44,32 +43,65 @@ class FilmsConsoleMenu(
     }
 
     private fun addFilm() {
-        println("Введите название фильма:")
-        val title = inputReader.readStringUntilNotNull()
+        handleExceptions {
+            println("Введите название фильма:")
+            val title = inputReader.readStringUntilNotNull()
+            filmValidator.validateTitle(title)
 
-        println("Введите актеров через запятую:")
-        val actors = readlnOrNull()?.split(",")?.toMutableList() ?: mutableListOf()
+            println("Введите актеров через запятую:")
+            val actors = readlnOrNull()?.split(",")?.toMutableList() ?: mutableListOf()
+            filmValidator.validateActors(actors)
 
-        println("Введите длительность фильма в минутах:")
-        val durationInMinutes = inputReader.readIntUntilNotNull()
+            println("Введите длительность фильма в минутах:")
+            val durationInMinutes = inputReader.readIntUntilNotNull()
+            filmValidator.validateDuration(durationInMinutes)
 
-        filmsRepository.add(FilmAddEntity(title, actors, durationInMinutes))
+            filmsRepository.add(FilmAddEntity(title, actors, durationInMinutes))
 
-        println("Фильм: $title успешно добавлен")
+            println("Фильм: $title успешно добавлен")
+        }
     }
 
     private fun deleteFilm() {
-        println("Введите название фильма для удаления:")
-        val title = inputReader.readStringUntilNotNull()
+        handleExceptions {
+            showAllFilms()
+            println("Введите название фильма для удаления:")
+            val title = inputReader.readStringUntilNotNull()
 
-        filmsController.deleteFilm(title)
-        //filmsRepository.delete(filmIdService.getIdFromTitle(title))
+            filmsController.deleteFilm(title)
 
-        println("Фильм: $title успешно удален")
+            println("Фильм: $title успешно удален")
+        }
     }
 
     private fun processEditFilmMenu() {
         showAllFilms()
-        filmEditMenu.handle()
+        do {
+            var isExit = false
+            try {
+                filmEditMenu.show()
+                isExit = !filmEditMenu.processInputIfNotExit()
+            } catch (e: Exception) {
+                println("Произошла ошибка: ${e.message}")
+            }
+        } while(!isExit)
+    }
+
+    private fun handleExceptions(block: () -> Unit) {
+        while (true) {
+            try {
+                block()
+                break
+            } catch (e: IllegalArgumentException) {
+                println(e.message)
+            } catch (e: NoSuchElementException) {
+                println(e.message)
+            } catch (e: NoFilmsException) {
+                println(e.message)
+                break
+            } catch (e: NumberFormatException) {
+                println("Некорректное значение для чисел")
+            }
+        }
     }
 }

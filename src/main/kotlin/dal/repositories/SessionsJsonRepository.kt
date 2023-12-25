@@ -38,6 +38,7 @@ class SessionsJsonRepository(
                 oldSession.copy(
                     dateTime = item.dateTime ?: oldSession.dateTime,
                     ticketPrice = item.ticketPrice ?: oldSession.ticketPrice,
+                    seats = item.seats ?: oldSession.seats
                 )
             )
         }
